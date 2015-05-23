@@ -4,7 +4,7 @@ Program Name:binlogback<br/>
 Summary:Analyze mysql binlog(only for row format)  in reverse order ,to solve incorrect operation<br/>
 
 #usage:
-./binlogback -f mysql-bin.000001 -m dsec -B unit -t t1 -c c1,c2,c3<br/>
+./binlogback.py -f mysql-bin.000001 -m dsec -B unit -t t1 -c c1,c2,c3<br/>
 -f,--file             binlog path,multi file split by ',',do not support regex of path<br/>
 -m,--mode             asc or desc,default is desc,recovering data need set mode=desc<br/>
 -B,--database         schema name<br/>
