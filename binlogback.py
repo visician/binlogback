@@ -1744,6 +1744,14 @@ if	__name__=='__main__':
 				#sort file by binlog header timestamp asc
 				for i in range (0,len(tmp)):
 					for j in range(0,len(tmp)-1-i):
+						#if timestamp is the same,sort by mysql-bin.xxxxxx
+						if(tmp[j][0]==tmp[j+1][0]):
+							suffix1=(tmp[j][1]).split('.')[-1]
+							suffix2=(tmp[j+1][1]).split('.')[-1]
+							if(suffix1>suffix1):
+								buf=tmp[j]
+								tmp[j]=tmp[j+1]
+								tmp[j+1]=buf					
 						if(tmp[j][0]>tmp[j+1][0]):
 							buf=tmp[j]
 							tmp[j]=tmp[j+1]
