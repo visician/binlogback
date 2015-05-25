@@ -1,7 +1,7 @@
 
 # binlogback
 Program Name:binlogback<br/>
-Summary:Analyze mysql binlog(only for row format)  in reverse order ,to solve incorrect operation<br/>
+Summary:Analyze mysql binlog(only for row format)  in reverse order ,to restore incorrect operation<br/>
 
 #usage:
 ./binlogback.py -f mysql-bin.000001 -m dsec -B unit -t t1 -c c1,c2,c3<br/>
