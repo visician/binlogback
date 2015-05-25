@@ -1628,7 +1628,11 @@ class Transaction:
 			self.data=["BEGIN;"]+self.data+lastQueryStatement	
 		else:
 			self.data=self.data+lastQueryStatement			
-
+		#filter useless "begin;commit;"
+		if(len(self.data)==2):
+			self.data=[]
+		
+		
 		#print self.data
 class Binlog:
 	def __init__(self,filepath,stream,mode,tabelInfo,startTime=None,stopTime=None,binlogSize=0):
