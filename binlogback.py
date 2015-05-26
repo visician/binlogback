@@ -633,26 +633,26 @@ class RowEvent:
 								buf1=Common.unpackVarString(stream,mysqlType[1])
 								#insert statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRow="%s '%s',"%(insertRow,buf1)
+									insertRow="%s %r,"%(insertRow,buf1)
 								else:
-									insertRow="%s '%s');"%(insertRow,buf1)
+									insertRow="%s %r);"%(insertRow,buf1)
 								#delete statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
+									insertRowBack="%s `%s`=%r and "%(insertRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)	
+									insertRowBack="%s `%s`=%r;"%(insertRowBack,tableInfo.columnName[idx],buf1)	
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_BLOB):
 								buf1=Common.unpackBlob(stream,mysqlType[1])
 								#insert statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRow="%s '%s',"%(insertRow,buf1)
+									insertRow="%s %r,"%(insertRow,buf1)
 								else:
-									insertRow="%s '%s');"%(insertRow,buf1)
+									insertRow="%s %r);"%(insertRow,buf1)
 								#delete statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
+									insertRowBack="%s `%s`=%r and "%(insertRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)										
+									insertRowBack="%s `%s`=%r;"%(insertRowBack,tableInfo.columnName[idx],buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_STRING):
 								if(mysqlType[1][0] in (247,248)):
 									val1=0
@@ -676,14 +676,14 @@ class RowEvent:
 									buf1=Common.unpackString(stream,mysqlType[1][1])
 									#insert statement
 									if(idx!=(len(tableMap.metaDef)-1)):
-										insertRow="%s '%s',"%(insertRow,buf1)
+										insertRow="%s %r,"%(insertRow,buf1)
 									else:
-										insertRow="%s '%s');"%(insertRow,buf1)
+										insertRow="%s %r);"%(insertRow,buf1)
 									#delete statement, to rollback	
 									if(idx!=(len(tableMap.metaDef)-1)):
-										insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
+										insertRowBack="%s `%s`=%r and "%(insertRowBack,tableInfo.columnName[idx],buf1)
 									else:
-										insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)									
+										insertRowBack="%s `%s`=%r;"%(insertRowBack,tableInfo.columnName[idx],buf1)									
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DOUBLE):
 								buf1=Common.unpackDouble(stream)
 								#insert statement
@@ -772,50 +772,50 @@ class RowEvent:
 								buf1=Common.unpackDatetime(stream)
 								#insert statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRow="%s '%s',"%(insertRow,buf1)
+									insertRow="%s %r,"%(insertRow,buf1)
 								else:
-									insertRow="%s '%s');"%(insertRow,buf1)
+									insertRow="%s %r);"%(insertRow,buf1)
 								#delete statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
+									insertRowBack="%s `%s`=%r and "%(insertRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)										
+									insertRowBack="%s `%s`=%r;"%(insertRowBack,tableInfo.columnName[idx],buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DATE):
 								buf1=Common.unpackDate(stream)
 								#insert statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRow="%s '%s',"%(insertRow,buf1)
+									insertRow="%s %r,"%(insertRow,buf1)
 								else:
-									insertRow="%s '%s');"%(insertRow,buf1)
+									insertRow="%s %r);"%(insertRow,buf1)
 								#delete statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
+									insertRowBack="%s `%s`=%r and "%(insertRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)									
+									insertRowBack="%s `%s`=%r;"%(insertRowBack,tableInfo.columnName[idx],buf1)									
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_TIMESTAMP):
 								buf1=Common.unpackTimestamp(stream)
 								#insert statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRow="%s '%s',"%(insertRow,buf1)
+									insertRow="%s %r,"%(insertRow,buf1)
 								else:
-									insertRow="%s '%s');"%(insertRow,buf1)
+									insertRow="%s %r);"%(insertRow,buf1)
 								#delete statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
+									insertRowBack="%s `%s`=%r and "%(insertRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)	
+									insertRowBack="%s `%s`=%r;"%(insertRowBack,tableInfo.columnName[idx],buf1)	
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_TIME):
 								buf1=Common.unpackTime(stream)
 								#insert statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRow="%s '%s',"%(insertRow,buf1)
+									insertRow="%s %r,"%(insertRow,buf1)
 								else:
-									insertRow="%s '%s');"%(insertRow,buf1)
+									insertRow="%s %r);"%(insertRow,buf1)
 								#delete statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
+									insertRowBack="%s `%s`=%r and "%(insertRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)	
+									insertRowBack="%s `%s`=%r;"%(insertRowBack,tableInfo.columnName[idx],buf1)	
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_BIT):
 								buf1=Common.unpackBit(stream,mysqlType[1])
 								#insert statement
@@ -884,26 +884,26 @@ class RowEvent:
 								buf1=Common.unpackVarString(stream,mysqlType[1])
 								#delete statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r and "%(deleteRow,tableInfo.columnName[idx],buf1)
 								else:
-									deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r;"%(deleteRow,tableInfo.columnName[idx],buf1)
 								#insert statement, for rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
+									deleteRowBack="%s %r, "%(deleteRowBack,buf1)
 								else:
-									deleteRowBack="%s '%s');"%(deleteRowBack,buf1)	
+									deleteRowBack="%s %r);"%(deleteRowBack,buf1)	
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_BLOB):
 								buf1=Common.unpackBlob(stream,mysqlType[1])
 								#delete statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r and "%(deleteRow,tableInfo.columnName[idx],buf1)
 								else:
-									deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r;"%(deleteRow,tableInfo.columnName[idx],buf1)
 								#insert statement, for rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
+									deleteRowBack="%s %r, "%(deleteRowBack,buf1)
 								else:
-									deleteRowBack="%s '%s');"%(deleteRowBack,buf1)											
+									deleteRowBack="%s %r);"%(deleteRowBack,buf1)											
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_STRING):
 								if(mysqlType[1][0] in (247,248)):
 									val1=0
@@ -927,14 +927,14 @@ class RowEvent:
 									buf1=Common.unpackString(stream,mysqlType[1][1])
 									#delete statement
 									if(idx!=(len(tableMap.metaDef)-1)):
-										deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+										deleteRow="%s `%s`=%r and "%(deleteRow,tableInfo.columnName[idx],buf1)
 									else:
-										deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
+										deleteRow="%s `%s`=%r;"%(deleteRow,tableInfo.columnName[idx],buf1)
 									#insert statement, for rollback	
 									if(idx!=(len(tableMap.metaDef)-1)):
-										deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
+										deleteRowBack="%s %r, "%(deleteRowBack,buf1)
 									else:
-										deleteRowBack="%s '%s');"%(deleteRowBack,buf1)										
+										deleteRowBack="%s %r);"%(deleteRowBack,buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DOUBLE):
 								buf1=Common.unpackDouble(stream)
 								#delete statement
@@ -1023,49 +1023,49 @@ class RowEvent:
 								buf1=Common.unpackDatetime(stream)
 								#delete statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r and "%(deleteRow,tableInfo.columnName[idx],buf1)
 								else:
-									deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r;"%(deleteRow,tableInfo.columnName[idx],buf1)
 								#insert statement, for rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
+									deleteRowBack="%s %r, "%(deleteRowBack,buf1)
 								else:
-									deleteRowBack="%s '%s');"%(deleteRowBack,buf1)										
+									deleteRowBack="%s %r);"%(deleteRowBack,buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DATE):
 								buf1=Common.unpackDate(stream)
 										#delete statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r and "%(deleteRow,tableInfo.columnName[idx],buf1)
 								else:
-									deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r;"%(deleteRow,tableInfo.columnName[idx],buf1)
 								#insert statement, for rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
+									deleteRowBack="%s %r, "%(deleteRowBack,buf1)
 								else:
-									deleteRowBack="%s '%s');"%(deleteRowBack,buf1)								
+									deleteRowBack="%s %r);"%(deleteRowBack,buf1)								
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_TIMESTAMP):
 								buf1=Common.unpackTimestamp(stream)
 								#delete statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r and "%(deleteRow,tableInfo.columnName[idx],buf1)
 								else:
-									deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r;"%(deleteRow,tableInfo.columnName[idx],buf1)
 								#insert statement, for rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
+									deleteRowBack="%s %r, "%(deleteRowBack,buf1)
 								else:
-									deleteRowBack="%s '%s');"%(deleteRowBack,buf1)	
+									deleteRowBack="%s %r);"%(deleteRowBack,buf1)	
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_TIME):
 								#delete statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r and "%(deleteRow,tableInfo.columnName[idx],buf1)
 								else:
-									deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
+									deleteRow="%s `%s`=%r;"%(deleteRow,tableInfo.columnName[idx],buf1)
 								#insert statement, for rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
+									deleteRowBack="%s %r, "%(deleteRowBack,buf1)
 								else:
-									deleteRowBack="%s '%s');"%(deleteRowBack,buf1)	
+									deleteRowBack="%s %r);"%(deleteRowBack,buf1)	
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_BIT):
 								buf1=Common.unpackBit(stream,mysqlType[1])
 								#delete statement
@@ -1139,26 +1139,26 @@ class RowEvent:
 								buf1=Common.unpackVarString(stream,mysqlType[1])
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r and"%(tmpRow,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r;"%(tmpRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
+									updateRowBack="%s `%s`=%r,"%(updateRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)
+									updateRowBack="%s `%s`=%r "%(updateRowBack,tableInfo.columnName[idx],buf1)
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_BLOB):
 								buf1=Common.unpackBlob(stream,mysqlType[1])
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r and"%(tmpRow,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r;"%(tmpRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
+									updateRowBack="%s `%s`=%r,"%(updateRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)										
+									updateRowBack="%s `%s`=%r "%(updateRowBack,tableInfo.columnName[idx],buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_STRING):
 								if(mysqlType[1][0] in (247,248)):
 									val1=0
@@ -1182,14 +1182,14 @@ class RowEvent:
 									buf1=Common.unpackString(stream,mysqlType[1][1])
 									#update statement
 									if(idx!=(len(tableMap.metaDef)-1)):
-										tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+										tmpRow="%s `%s`=%r and"%(tmpRow,tableInfo.columnName[idx],buf1)
 									else:
-										tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
+										tmpRow="%s `%s`=%r;"%(tmpRow,tableInfo.columnName[idx],buf1)
 									#update statement, to rollback	
 									if(idx!=(len(tableMap.metaDef)-1)):
-										updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
+										updateRowBack="%s `%s`=%r,"%(updateRowBack,tableInfo.columnName[idx],buf1)
 									else:
-										updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)									
+										updateRowBack="%s `%s`=%r "%(updateRowBack,tableInfo.columnName[idx],buf1)									
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DOUBLE):
 								buf1=Common.unpackDouble(stream)
 								#update statement
@@ -1280,50 +1280,50 @@ class RowEvent:
 								buf1=Common.unpackDatetime(stream)
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r and"%(tmpRow,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r;"%(tmpRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
+									updateRowBack="%s `%s`=%r,"%(updateRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)										
+									updateRowBack="%s `%s`=%r "%(updateRowBack,tableInfo.columnName[idx],buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DATE):
 								buf1=Common.unpackDate(stream)
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r and"%(tmpRow,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r;"%(tmpRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
+									updateRowBack="%s `%s`=%r,"%(updateRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)								
+									updateRowBack="%s `%s`=%r "%(updateRowBack,tableInfo.columnName[idx],buf1)								
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_TIMESTAMP):
 								buf1=Common.unpackTimestamp(stream)
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r and"%(tmpRow,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r;"%(tmpRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
+									updateRowBack="%s `%s`=%r,"%(updateRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)	
+									updateRowBack="%s `%s`=%r "%(updateRowBack,tableInfo.columnName[idx],buf1)	
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_TIME):
 								buf1=Common.unpackTime(stream)
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r and"%(tmpRow,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
+									tmpRow="%s `%s`=%r;"%(tmpRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
+									updateRowBack="%s `%s`=%r,"%(updateRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)
+									updateRowBack="%s `%s`=%r "%(updateRowBack,tableInfo.columnName[idx],buf1)
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_BIT):
 								buf1=Common.unpackBit(stream,mysqlType[1])
 								#update statement
@@ -1378,26 +1378,26 @@ class RowEvent:
 								buf1=Common.unpackVarString(stream,mysqlType[1])
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r ,"%(updateRow,tableInfo.columnName[idx],buf1)
 								else:
-									updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r "%(updateRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+									tmpRowBack="%s `%s`=%r and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)		
+									tmpRowBack="%s `%s`=%r ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)		
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_BLOB):
 								buf1=Common.unpackBlob(stream,mysqlType[1])
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r ,"%(updateRow,tableInfo.columnName[idx],buf1)
 								else:
-									updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r "%(updateRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+									tmpRowBack="%s `%s`=%r and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)											
+									tmpRowBack="%s `%s`=%r ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)											
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_STRING):
 								if(mysqlType[1][0] in (247,248)):
 									val1=0
@@ -1421,14 +1421,14 @@ class RowEvent:
 									buf1=Common.unpackString(stream,mysqlType[1][1])
 									#update statement
 									if(idx!=(len(tableMap.metaDef)-1)):
-										updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+										updateRow="%s `%s`=%r ,"%(updateRow,tableInfo.columnName[idx],buf1)
 									else:
-										updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
+										updateRow="%s `%s`=%r "%(updateRow,tableInfo.columnName[idx],buf1)
 									#update statement, to rollback	
 									if(idx!=(len(tableMap.metaDef)-1)):
-										tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+										tmpRowBack="%s `%s`=%r and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
 									else:
-										tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)		
+										tmpRowBack="%s `%s`=%r ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)		
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DOUBLE):
 								buf1=Common.unpackDouble(stream)
 								#update statement
@@ -1517,50 +1517,50 @@ class RowEvent:
 								buf1=Common.unpackDatetime(stream)
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r ,"%(updateRow,tableInfo.columnName[idx],buf1)
 								else:
-									updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r "%(updateRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+									tmpRowBack="%s `%s`=%r and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)									
+									tmpRowBack="%s `%s`=%r ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)									
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DATE):
 								buf1=Common.unpackDate(stream)
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r ,"%(updateRow,tableInfo.columnName[idx],buf1)
 								else:
-									updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r "%(updateRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+									tmpRowBack="%s `%s`=%r and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)							
+									tmpRowBack="%s `%s`=%r ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)							
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_TIMESTAMP):
 								buf1=Common.unpackTimestamp(stream)
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r ,"%(updateRow,tableInfo.columnName[idx],buf1)
 								else:
-									updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r "%(updateRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+									tmpRowBack="%s `%s`=%r and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+									tmpRowBack="%s `%s`=%r ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_TIME):
 								buf1=Common.unpackTime(stream)
 								#update statement
 								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r ,"%(updateRow,tableInfo.columnName[idx],buf1)
 								else:
-									updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
+									updateRow="%s `%s`=%r "%(updateRow,tableInfo.columnName[idx],buf1)
 								#update statement, to rollback	
 								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+									tmpRowBack="%s `%s`=%r and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
 								else:
-									tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)	
+									tmpRowBack="%s `%s`=%r ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)	
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_BIT):
 								buf1=Common.unpackBit(stream,mysqlType[1])
 								#update statement
