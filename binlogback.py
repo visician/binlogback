@@ -273,11 +273,17 @@ class Common:
 					buf1,=struct.unpack('B',stream.read(1))
 					buf2,=struct.unpack('B',stream.read(1))
 					varcharLengthBytes=1
+					#for type of set and enum,
+					if(buf1 in (248,247)):
+						varcharLengthBytes=buf2
+						result.append((mysqlType,(buf1,varcharLengthBytes)))
+						continue
+					
 					if(buf1==254):
 						varcharLengthBytes=1
 					else:
 						varcharLengthBytes=2
-					result.append((mysqlType,varcharLengthBytes))
+					result.append((mysqlType,(buf1,varcharLengthBytes)))
 					continue
 				#bit(n),(n+7)/8 bytes to store 
 				elif(mysqlType==MysqlTypeDef.MYSQL_TYPE_BIT):
@@ -648,17 +654,36 @@ class RowEvent:
 								else:
 									insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_STRING):
-								buf1=Common.unpackString(stream,mysqlType[1])
-								#insert statement
-								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRow="%s '%s',"%(insertRow,buf1)
-								else:
-									insertRow="%s '%s');"%(insertRow,buf1)
-								#delete statement, to rollback	
-								if(idx!=(len(tableMap.metaDef)-1)):
-									insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
-								else:
-									insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)									
+								if(mysqlType[1][0] in (247,248)):
+									val1=0
+									if(mysqlType[1][1]==1):
+										val1=Common.unpack1ByteInt(stream)
+									elif(mysqlType[1][1]==2):
+										val1=Common.unpack2ByteInt(stream)
+									else:
+										raise Exception("invalid length of enum type or set type,pos:%d"%(stream.tell))
+									#insert statement
+									if(idx!=(len(tableMap.metaDef)-1)):
+										insertRow="%s %d,"%(insertRow,val1)
+									else:
+										insertRow="%s %d);"%(insertRow,val1)
+									#delete statement, to rollback	
+									if(idx!=(len(tableMap.metaDef)-1)):
+										insertRowBack="%s `%s`=%d and "%(insertRowBack,tableInfo.columnName[idx],val1)
+									else:
+										insertRowBack="%s `%s`=%d;"%(insertRowBack,tableInfo.columnName[idx],val1)										
+								else:		
+									buf1=Common.unpackString(stream,mysqlType[1][1])
+									#insert statement
+									if(idx!=(len(tableMap.metaDef)-1)):
+										insertRow="%s '%s',"%(insertRow,buf1)
+									else:
+										insertRow="%s '%s');"%(insertRow,buf1)
+									#delete statement, to rollback	
+									if(idx!=(len(tableMap.metaDef)-1)):
+										insertRowBack="%s `%s`='%s' and "%(insertRowBack,tableInfo.columnName[idx],buf1)
+									else:
+										insertRowBack="%s `%s`='%s';"%(insertRowBack,tableInfo.columnName[idx],buf1)									
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DOUBLE):
 								buf1=Common.unpackDouble(stream)
 								#insert statement
@@ -880,17 +905,36 @@ class RowEvent:
 								else:
 									deleteRowBack="%s '%s');"%(deleteRowBack,buf1)											
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_STRING):
-								buf1=Common.unpackString(stream,mysqlType[1])
-								#delete statement
-								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+								if(mysqlType[1][0] in (247,248)):
+									val1=0
+									if(mysqlType[1][1]==1):
+										val1=Common.unpack1ByteInt(stream)
+									elif(mysqlType[1][1]==2):
+										val1=Common.unpack2ByteInt(stream)
+									else:
+										raise Exception("invalid length of enum type or set type,pos:%d"%(stream.tell))
+									#delete statement
+									if(idx!=(len(tableMap.metaDef)-1)):
+										deleteRow="%s `%s`=%d and "%(deleteRow,tableInfo.columnName[idx],val1)
+									else:
+										deleteRow="%s `%s`=%d;"%(deleteRow,tableInfo.columnName[idx],val1)
+									#insert statement, for rollback	
+									if(idx!=(len(tableMap.metaDef)-1)):
+										deleteRowBack="%s %d, "%(deleteRowBack,val1)
+									else:
+										deleteRowBack="%s %d);"%(deleteRowBack,val1)							
 								else:
-									deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
-								#insert statement, for rollback	
-								if(idx!=(len(tableMap.metaDef)-1)):
-									deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
-								else:
-									deleteRowBack="%s '%s');"%(deleteRowBack,buf1)										
+									buf1=Common.unpackString(stream,mysqlType[1][1])
+									#delete statement
+									if(idx!=(len(tableMap.metaDef)-1)):
+										deleteRow="%s `%s`='%s' and "%(deleteRow,tableInfo.columnName[idx],buf1)
+									else:
+										deleteRow="%s `%s`='%s';"%(deleteRow,tableInfo.columnName[idx],buf1)
+									#insert statement, for rollback	
+									if(idx!=(len(tableMap.metaDef)-1)):
+										deleteRowBack="%s '%s', "%(deleteRowBack,buf1)
+									else:
+										deleteRowBack="%s '%s');"%(deleteRowBack,buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DOUBLE):
 								buf1=Common.unpackDouble(stream)
 								#delete statement
@@ -1116,17 +1160,36 @@ class RowEvent:
 								else:
 									updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)										
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_STRING):
-								buf1=Common.unpackString(stream,mysqlType[1])
-								#update statement
-								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+								if(mysqlType[1][0] in (247,248)):
+									val1=0
+									if(mysqlType[1][1]==1):
+										val1=Common.unpack1ByteInt(stream)
+									elif(mysqlType[1][1]==2):
+										val1=Common.unpack2ByteInt(stream)
+									else:
+										raise Exception("invalid length of enum type or set type,pos:%d"%(stream.tell))
+									#update statement
+									if(idx!=(len(tableMap.metaDef)-1)):
+										tmpRow="%s `%s`=%d and"%(tmpRow,tableInfo.columnName[idx],val1)
+									else:
+										tmpRow="%s `%s`=%d;"%(tmpRow,tableInfo.columnName[idx],val1)
+									#update statement, to rollback	
+									if(idx!=(len(tableMap.metaDef)-1)):
+										updateRowBack="%s `%s`=%d,"%(updateRowBack,tableInfo.columnName[idx],val1)
+									else:
+										updateRowBack="%s `%s`=%d "%(updateRowBack,tableInfo.columnName[idx],val1)							
 								else:
-									tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
-								#update statement, to rollback	
-								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
-								else:
-									updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)									
+									buf1=Common.unpackString(stream,mysqlType[1][1])
+									#update statement
+									if(idx!=(len(tableMap.metaDef)-1)):
+										tmpRow="%s `%s`='%s' and"%(tmpRow,tableInfo.columnName[idx],buf1)
+									else:
+										tmpRow="%s `%s`='%s';"%(tmpRow,tableInfo.columnName[idx],buf1)
+									#update statement, to rollback	
+									if(idx!=(len(tableMap.metaDef)-1)):
+										updateRowBack="%s `%s`='%s',"%(updateRowBack,tableInfo.columnName[idx],buf1)
+									else:
+										updateRowBack="%s `%s`='%s' "%(updateRowBack,tableInfo.columnName[idx],buf1)									
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DOUBLE):
 								buf1=Common.unpackDouble(stream)
 								#update statement
@@ -1336,17 +1399,36 @@ class RowEvent:
 								else:
 									tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)											
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_STRING):
-								buf1=Common.unpackString(stream,mysqlType[1])
-								#update statement
-								if(idx!=(len(tableMap.metaDef)-1)):
-									updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+								if(mysqlType[1][0] in (247,248)):
+									val1=0
+									if(mysqlType[1][1]==1):
+										val1=Common.unpack1ByteInt(stream)
+									elif(mysqlType[1][1]==2):
+										val1=Common.unpack2ByteInt(stream)
+									else:
+										raise Exception("invalid length of enum type or set type,pos:%d"%(stream.tell))
+									#update statement
+									if(idx!=(len(tableMap.metaDef)-1)):
+										updateRow="%s `%s`=%d ,"%(updateRow,tableInfo.columnName[idx],val1)
+									else:
+										updateRow="%s `%s`=%d "%(updateRow,tableInfo.columnName[idx],val1)
+									#update statement, to rollback	
+									if(idx!=(len(tableMap.metaDef)-1)):
+										tmpRowBack="%s `%s`=%d and"%(tmpRowBack,tableInfo.columnName[idx],val1)
+									else:
+										tmpRowBack="%s `%s`=%d ;"%(tmpRowBack,tableInfo.columnName[idx],val1)							
 								else:
-									updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
-								#update statement, to rollback	
-								if(idx!=(len(tableMap.metaDef)-1)):
-									tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
-								else:
-									tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)		
+									buf1=Common.unpackString(stream,mysqlType[1][1])
+									#update statement
+									if(idx!=(len(tableMap.metaDef)-1)):
+										updateRow="%s `%s`='%s' ,"%(updateRow,tableInfo.columnName[idx],buf1)
+									else:
+										updateRow="%s `%s`='%s' "%(updateRow,tableInfo.columnName[idx],buf1)
+									#update statement, to rollback	
+									if(idx!=(len(tableMap.metaDef)-1)):
+										tmpRowBack="%s `%s`='%s' and"%(tmpRowBack,tableInfo.columnName[idx],buf1)
+									else:
+										tmpRowBack="%s `%s`='%s' ;"%(tmpRowBack,tableInfo.columnName[idx],buf1)		
 							elif(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DOUBLE):
 								buf1=Common.unpackDouble(stream)
 								#update statement
