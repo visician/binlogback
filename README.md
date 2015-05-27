@@ -19,6 +19,7 @@ Summary:Analyze mysql binlog(only for row format)  in reverse order ,to restore 
 1:the table must have a primary key,and no ddl changes of any columns,if column numbers changed between begin-datetime and end-datetime,program will exit(1)<br/>
 2:only mysql 5.5 is supported so far<br/>
 3:only check row format<br/>
+4：type of time will be unpacked with error value when value is less than "00:00:00"
 #Concact me:
 Email:zhkeke2008@163.com<br/>
 email me when you meet any error or any bug.<br/>
