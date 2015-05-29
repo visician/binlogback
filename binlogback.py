@@ -617,7 +617,6 @@ class RowEvent:
 						nullMask=bitmap[idx/8]
 						#not null
 						if(((nullMask>>(idx%8))%2)==0):
-							
 							if(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_NEWDECIMAL or  mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DECIMAL ):
 								buf1=Common.unpackDecimal(stream,mysqlType[1][0],mysqlType[1][1])
 								#insert statement
@@ -1709,9 +1708,9 @@ class Transaction:
 			else:
 				raise e
 		if(mode=='desc'):	
-			self.data=["BEGIN;"]+self.data+lastQueryStatement	
+			self.data=["#pos:%d\nBEGIN;"%(header.beginPos)]+self.data+lastQueryStatement	
 		else:
-			self.data=self.data+lastQueryStatement			
+			self.data=["#pos:%d\nBEGIN;"%(header.beginPos)]+self.data+lastQueryStatement			
 		#filter useless "begin;commit;"
 		if(len(self.data)==2):
 			self.data=[]
