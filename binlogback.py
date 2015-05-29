@@ -576,6 +576,7 @@ class TableInfo:
 		self.schemaName=schemaName
 		self.tableName=tableName
 		self.columnName=columnName
+
 	def getInsertLeft(self):
 		buf1="insert into `%s`.`%s`("%(self.schemaName,self.tableName)
 		i=0
@@ -585,14 +586,13 @@ class TableInfo:
 				buf1=buf1+"`%s`,"%(column)
 			else:
 				buf1=buf1+"`%s`)values ("%(column)
-			i=i+1	
+			i=i+1
 		return buf1
 class RowEvent:
 	def __init__(self,header,tableMap,stream,tableInfo):
 		try:
 			if(len(tableInfo.columnName)!=len(tableMap.metaDef)):
 				raise Exception("fatal error:column numbers is not match")
-				
 			self.tableMap=tableMap
 			self.header=header
 			tmpHeader=header
@@ -867,7 +867,6 @@ class RowEvent:
 					for mysqlType in tableMap.metaDef:
 						nullMask=bitmap[idx/8]
 						#not null
-
 						if(((nullMask>>(idx%8))%2)==0):
 							if(mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_NEWDECIMAL or  mysqlType[0]==MysqlTypeDef.MYSQL_TYPE_DECIMAL ):
 								buf1=Common.unpackDecimal(stream,mysqlType[1][0],mysqlType[1][1])
@@ -882,6 +881,7 @@ class RowEvent:
 								else:
 									deleteRowBack="%s %s);"%(deleteRowBack,buf1)	
 							elif(mysqlType[0] in (MysqlTypeDef.MYSQL_TYPE_VARCHAR,MysqlTypeDef.MYSQL_TYPE_VAR_STRING)):
+								
 								buf1=Common.unpackVarString(stream,mysqlType[1])
 								#delete statement
 								if(idx!=(len(tableMap.metaDef)-1)):
@@ -1085,14 +1085,14 @@ class RowEvent:
 						else:
 							#insert statement
 							if(idx!=(len(tableMap.metaDef)-1)):
-								deleteRow="%s `%s`=%s and "%(deleteRow,'NULL,')
+								deleteRow="%s `%s`=NULL and "%(deleteRow,tableInfo.columnName[idx])
 							else:
-								deleteRow="%s %s,"%(deleteRow,'NULL);')
+								deleteRow="%s `%s`=NULL;"%(deleteRow,tableInfo.columnName[idx])
 							#delete statement, to rollback	
 							if(idx!=(len(tableMap.metaDef)-1)):
-								deleteRowBack="%s `%s`=NULL and "%(deleteRowBack,tableInfo.columnName[idx])
+								deleteRowBack="%s NULL,"%(deleteRowBack)
 							else:
-								deleteRowBack="%s `%s`=NULL;"%(deleteRowBack,tableInfo.columnName[idx])		
+								deleteRowBack="%s NULL);"%(deleteRowBack)
 						idx=idx+1
 						
 					if(stream.tell()==tmpHeader.nextLogPos):
@@ -1115,10 +1115,11 @@ class RowEvent:
 					bitmap=struct.unpack(str(bitmapLength)+'B',stream.read(bitmapLength))
 					idx=0
 					nullMask=0
+
 					updateRow="update `%s`.`%s` set " % (tableInfo.schemaName,tableInfo.tableName)
 					tmpRow=" where "  
 					updateRowBack="update `%s`.`%s` set " %(tableInfo.schemaName,tableInfo.tableName)
-					tmpRowback=" where "
+					tmpRowBack=" where "
 					#row data before update
 					for mysqlType in tableMap.metaDef:
 						nullMask=bitmap[idx/8]
@@ -1341,16 +1342,16 @@ class RowEvent:
 							else:
 								raise Exception("unknown mysql type:%s"%(mysqlType[0]))
 						else:
-							#insert statement
+							#update statement
 							if(idx!=(len(tableMap.metaDef)-1)):
-								insertRow="%s %s"%(insertRow,'NULL,')
+								tmpRow="%s `%s`=NULL and "%(tmpRow,tableInfo.columnName[idx])
 							else:
-								insertRow="%s %s"%(insertRow,'NULL);')
-							#delete statement, to rollback	
+								tmpRow="%s `%s`=NULL;"%(tmpRow,tableInfo.columnName[idx])
+							#update statement, to rollback	
 							if(idx!=(len(tableMap.metaDef)-1)):
-								insertRowBack="%s `%s`=NULL and "%(insertRowBack,tableInfo.columnName[idx])
+								updateRowBack="%s `%s`=NULL,"%(updateRowBack,tableInfo.columnName[idx])
 							else:
-								insertRowBack="%s `%s`=NULL;"%(insertRowBack,tableInfo.columnName[idx])		
+								updateRowBack="%s `%s`=NULL "%(updateRowBack,tableInfo.columnName[idx])		
 						idx=idx+1					
 						
 					bitmap=struct.unpack(str(bitmapLength)+'B',stream.read(bitmapLength))
@@ -1597,7 +1598,7 @@ class RowEvent:
 							stream.seek(stream.tell()+bitmapLength*2)
 						else:
 							stream.seek(header2.beginPos)							
-
+					
 					updateRow=updateRow+tmpRow
 					updateRowBack=updateRowBack+tmpRowBack
 					self.data.append(updateRow)
